@@ -35,8 +35,17 @@ namespace pandemic {
 	{
 		return *this;
 	}
-	Player Player::drive(City)
+	Player Player::drive(City city)
 	{
+		if (this->curr_city == city)
+		{
+			throw std::logic_error("cant drive to a city you're in");
+		}
+		if (std::find(this->paths[curr_city].begin(), this->paths[curr_city].end(), city) == this->paths[curr_city].end())
+		{
+			throw std::logic_error("the destination city doesn't neighbour the current city");
+		}
+		this->curr_city = city;
 		return *this;
 	}
 	Player Player::fly_direct(City)
