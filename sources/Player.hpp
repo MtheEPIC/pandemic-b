@@ -9,7 +9,7 @@
 namespace pandemic {
 	class Player : public Board
 	{
-	public:
+	protected:
 		std::unordered_map<City, std::vector<City>> paths = {
 			{City::Algiers, {City::Madrid, City::Paris, City::Istanbul, City::Cairo}},
 			{City::Atlanta, {City::Chicago, City::Miami, City::Washington}},
@@ -63,13 +63,21 @@ namespace pandemic {
 		Board* game_board;
 		City curr_city;
 		std::vector<City> cards;
+		std::vector<City> research_stations;
 		int cards_for_cure;
-		Player(Board&, City);
-		Player(Board&, City, int);
+		
 		M get_pandemic_levels();
 		void set_pandemic_levels(City city, int level);
+		bool has_card(City card);
+		bool has_research_station(City city);
+		void remove_card(City card);
+	public:
+		Player(Board&, City);
+		Player(Board&, City, int);
 		~Player();
+		
 		Player take_card(City);
+		Player remove_cards();
 		Player drive(City);
 		Player fly_direct(City);
 		Player treat(City);
