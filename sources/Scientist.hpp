@@ -7,6 +7,7 @@ namespace pandemic {
 	public:
 		Scientist(Board& game_board, City init_city, int card_for_cure);
 		~Scientist();
+		Player& discover_cure(Color);
 		static std::string role();
 	};
 }
