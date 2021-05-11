@@ -113,7 +113,6 @@ namespace pandemic {
 			{City::Washington, Color::Blue}
 		};
 		std::unordered_set<Color> cures;
-		// std::unordered_map<City, bool> cards;
 		// std::unordered_set<City> cards;
 		std::vector<City> cards;
 		std::vector<City> research_stations;
@@ -132,8 +131,9 @@ namespace pandemic {
 		Player(Board&, City, int);
 		~Player();
 		
-		Player& take_card(City);
 		Player& remove_cards();
+		
+		Player& take_card(City);
 		Player& drive(City);
 		Player& fly_direct(City);
 		Player& treat(City);

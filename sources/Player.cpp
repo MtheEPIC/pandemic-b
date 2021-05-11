@@ -35,19 +35,20 @@ namespace pandemic {
 	{
 		return std::find(this->research_stations.begin(), this->research_stations.end(), curr_city) != this->research_stations.end();
 	}
+	bool Player::is_neighbour_city(City dest_city)
+	{
+		return std::find(this->paths[this->curr_city].begin(), this->paths[this->curr_city].end(), dest_city) != this->paths[this->curr_city].end();
+	}
 	bool Player::has_card(City card)
 	{
 		return std::find(this->cards.begin(), this->cards.end(), card) != this->cards.end();
+		// return this->cards.contains(card);
 	}
 	void Player::remove_card(City card)
 	{
 		auto it = std::find(this->cards.begin(), this->cards.end(), card);
 		this->cards.erase(it);
 		// this->cards.erase(card);
-	}
-	bool Player::is_neighbour_city(City dest_city)
-	{
-		return std::find(this->paths[this->curr_city].begin(), this->paths[this->curr_city].end(), dest_city) != this->paths[this->curr_city].end();
 	}
 	Player& Player::take_card(City card)
 	{
@@ -56,10 +57,9 @@ namespace pandemic {
 		{
 			this->cards.push_back(card);
 		}
-		// auto it = this->cards.find(card);
-		// if (it == this->cards.end())
+		// if (!this->has_card(card))
 		// {
-			// this->cards.insert({card, true});
+			// this->cards.insert(card);
 		// }
 		return *this;
 	}
@@ -129,7 +129,7 @@ namespace pandemic {
 		this->curr_city = dest_city;
 		return *this;
 	}
-	Player& Player::fly_shuttle(City dest_city) //add for dispatcher	
+	Player& Player::fly_shuttle(City dest_city)
 	{
 		if (this->curr_city == dest_city)
 		{
@@ -142,16 +142,17 @@ namespace pandemic {
 		this->curr_city = dest_city;
 		return *this;
 	}
-	Player& Player::build() //OperationsExpert
+	Player& Player::build()
 	{
 		if (this->has_research_station(this->curr_city))
 		{
 			return *this;
 		}
-		if (this->role() != "OperationsExpert" && !this->has_card(this->curr_city))
+		if (!this->has_card(this->curr_city))
 		{
 			throw std::logic_error("cant build without a city card");
 		}
+		this->remove_card(this->curr_city);
 		this->research_stations.push_back(this->curr_city);
 		return *this;
 	}
