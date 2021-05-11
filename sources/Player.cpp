@@ -151,9 +151,26 @@ namespace pandemic {
 	}
 	Player Player::discover_cure(Color)
 	{
-		if(this->cards.size() == this->cards_for_cure)
+		if (!this->has_research_station(curr_city))
+		{
+			throw std::logic_error("must be in a research station to discover a cure");
+		}
+		if (this->cards.size() == this->cards_for_cure)
 		{
 			throw std::logic_error("not enough card to discover a cure");
+		}
+		Color pandemic_color = this->card_colors[curr_city];
+		int counter = 0;
+		// for (auto i = this->cards.begin(); i != this->cards.end(); i++)
+		// {
+			// if (this->card_colors.[i] == pandemic_color)
+			// {
+				// counter++;
+			// }
+		// }
+		if (counter < this->cards_for_cure)
+		{
+			throw std::logic_error("not enough cards of the right color to discover a cure");
 		}
 		return *this;
 	}
