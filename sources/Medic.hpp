@@ -7,6 +7,7 @@ namespace pandemic {
 	public:
 		Medic(Board& game_board, City init_city);
 		~Medic();
+		Player& treat(City);
 		static std::string role();
 	};
 }
