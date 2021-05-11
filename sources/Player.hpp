@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include "Board.hpp"
 #include "City.hpp"
@@ -110,6 +112,9 @@ namespace pandemic {
 			{City::Tokyo, Color::Red},
 			{City::Washington, Color::Blue}
 		};
+		std::unordered_set<Color> cures;
+		// std::unordered_map<City, bool> cards;
+		// std::unordered_set<City> cards;
 		std::vector<City> cards;
 		std::vector<City> research_stations;
 		Board* game_board;
@@ -121,20 +126,21 @@ namespace pandemic {
 		bool has_card(City card);
 		bool has_research_station(City city);
 		void remove_card(City card);
+		bool is_neighbour_city(City);
 	public:
 		Player(Board&, City);
 		Player(Board&, City, int);
 		~Player();
 		
-		Player take_card(City);
-		Player remove_cards();
-		Player drive(City);
-		Player fly_direct(City);
-		Player treat(City);
-		Player fly_charter(City);
-		Player build();
-		Player fly_shuttle(City);
-		Player discover_cure(Color);
+		Player& take_card(City);
+		Player& remove_cards();
+		Player& drive(City);
+		Player& fly_direct(City);
+		Player& treat(City);
+		Player& fly_charter(City);
+		Player& build();
+		Player& fly_shuttle(City);
+		Player& discover_cure(Color);
 		std::string role();
 	};
 }

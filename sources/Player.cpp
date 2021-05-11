@@ -14,6 +14,10 @@ namespace pandemic {
 		this->curr_city = init_city;
 		this->cards_for_cure = discover_cure_cards;
 	}
+	Player::~Player()
+	{
+		
+	}
 	M Player::get_pandemic_levels()
 	{
 		return this->game_board->cities_pandemic_level;
@@ -27,6 +31,10 @@ namespace pandemic {
 		}
 		this->game_board->cities_pandemic_level[city] = level;
 	}
+	bool Player::has_research_station(City city)
+	{
+		return std::find(this->research_stations.begin(), this->research_stations.end(), curr_city) != this->research_stations.end();
+	}
 	bool Player::has_card(City card)
 	{
 		return std::find(this->cards.begin(), this->cards.end(), card) != this->cards.end();
@@ -35,30 +43,32 @@ namespace pandemic {
 	{
 		auto it = std::find(this->cards.begin(), this->cards.end(), card);
 		this->cards.erase(it);
+		// this->cards.erase(card);
 	}
-	bool Player::has_research_station(City city)
+	bool Player::is_neighbour_city(City dest_city)
 	{
-		return std::find(this->research_stations.begin(), this->research_stations.end(), curr_city) != this->research_stations.end();
+		return std::find(this->paths[this->curr_city].begin(), this->paths[this->curr_city].end(), dest_city) != this->paths[this->curr_city].end();
 	}
-	Player::~Player()
-	{
-		
-	}
-	Player Player::take_card(City card)
+	Player& Player::take_card(City card)
 	{
 		auto it = std::find(this->cards.begin(), this->cards.end(), card);
 		if (it == this->cards.end())
 		{
 			this->cards.push_back(card);
 		}
+		// auto it = this->cards.find(card);
+		// if (it == this->cards.end())
+		// {
+			// this->cards.insert({card, true});
+		// }
 		return *this;
 	}
-	Player Player::remove_cards()
+	Player& Player::remove_cards()
 	{
 		this->cards.clear();
 		return *this;
 	}
-	Player Player::treat(City city)
+	Player& Player::treat(City city)
 	{
 		if(this->get_pandemic_levels()[city] == 0)
 		{
@@ -66,36 +76,32 @@ namespace pandemic {
 		}
 		if(this->curr_city != city)
 		{
-			if(this->role() != "FieldDoctor")
-			{
-				auto it = std::find(this->cards.begin(), this->cards.end(), city);
-				if (it == this->cards.end())
-				{
-					throw std::logic_error("only FieldDoctor can treat a disease in a city his not in without having the proper card");	
-				}
-				this->cards.erase(it);
-			}
+			throw std::logic_error("can't treat a disease in a city you're not in");
 		}
-		// check if cure exists
-		// -------------
-		this->set_pandemic_levels(city, -1);
-		
+		if (this->cures.contains(this->card_colors[city]))
+		{
+			this->set_pandemic_levels(city, 0);
+		}
+		else
+		{
+			this->set_pandemic_levels(city, -1);
+		}
 		return *this;
 	}
-	Player Player::drive(City city)
+	Player& Player::drive(City dest_city)
 	{
-		if (this->curr_city == city)
+		if (this->curr_city == dest_city)
 		{
 			throw std::logic_error("cant drive to a city you're in");
 		}
-		if (std::find(this->paths[curr_city].begin(), this->paths[curr_city].end(), city) == this->paths[curr_city].end())
+		if (!this->is_neighbour_city(dest_city))
 		{
 			throw std::logic_error("the destination city doesn't neighbour the current city");
 		}
-		this->curr_city = city;
+		this->curr_city = dest_city;
 		return *this;
 	}
-	Player Player::fly_charter(City dest_city)
+	Player& Player::fly_charter(City dest_city)
 	{
 		if (this->curr_city == dest_city)
 		{
@@ -109,7 +115,7 @@ namespace pandemic {
 		this->curr_city = dest_city;
 		return *this;
 	}
-	Player Player::fly_direct(City dest_city)
+	Player& Player::fly_direct(City dest_city)
 	{
 		if (this->curr_city == dest_city)
 		{
@@ -123,7 +129,7 @@ namespace pandemic {
 		this->curr_city = dest_city;
 		return *this;
 	}
-	Player Player::fly_shuttle(City dest_city) //add for dispatcher	
+	Player& Player::fly_shuttle(City dest_city) //add for dispatcher	
 	{
 		if (this->curr_city == dest_city)
 		{
@@ -136,7 +142,7 @@ namespace pandemic {
 		this->curr_city = dest_city;
 		return *this;
 	}
-	Player Player::build() //OperationsExpert
+	Player& Player::build() //OperationsExpert
 	{
 		if (this->has_research_station(this->curr_city))
 		{
@@ -149,7 +155,7 @@ namespace pandemic {
 		this->research_stations.push_back(this->curr_city);
 		return *this;
 	}
-	Player Player::discover_cure(Color)
+	Player& Player::discover_cure(Color)
 	{
 		if (!this->has_research_station(curr_city))
 		{
