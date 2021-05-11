@@ -7,6 +7,7 @@ namespace pandemic {
 	public:
 		FieldDoctor(Board& game_board, City init_city);
 		~FieldDoctor();
+		Player& treat(City);
 		static std::string role();
 	};
 }
