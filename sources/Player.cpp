@@ -142,7 +142,11 @@ namespace pandemic {
 		}
 		if (!this->has_research_station(dest_city))
 		{
-			throw std::logic_error("cant shuttle fly without a research station");
+			throw std::logic_error("cant shuttle fly without a research station in destination");
+		}
+		if (!this->has_research_station(this->curr_city))
+		{
+			throw std::logic_error("cant shuttle fly without a research station in current city");
 		}
 		this->curr_city = dest_city;
 		return *this;
@@ -203,9 +207,5 @@ namespace pandemic {
 			}
 		}
 		return *this;
-	}
-	std::string Player::role()
-	{
-		return "";
 	}
 }
