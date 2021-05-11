@@ -5,7 +5,8 @@ namespace pandemic {
 	class GeneSplicer : public Player
 	{
 	public:
-		GeneSplicer(Board, City);
+		GeneSplicer(Board& game_board, City init_city);
 		~GeneSplicer();
+		static std::string role();
 	};
 }

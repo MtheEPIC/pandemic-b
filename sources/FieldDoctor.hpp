@@ -5,7 +5,8 @@ namespace pandemic {
 	class FieldDoctor : public Player
 	{
 	public:
-		FieldDoctor(Board, City);
+		FieldDoctor(Board& game_board, City init_city);
 		~FieldDoctor();
+		static std::string role();
 	};
 }

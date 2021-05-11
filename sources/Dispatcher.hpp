@@ -5,7 +5,8 @@ namespace pandemic {
 	class Dispatcher : public Player
 	{
 	public:
-		Dispatcher(Board, City);
+		Dispatcher(Board& game_board, City init_city);
 		~Dispatcher();
+		static std::string role();
 	};
 }

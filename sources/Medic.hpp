@@ -5,7 +5,8 @@ namespace pandemic {
 	class Medic : public Player
 	{
 	public:
-		Medic(Board, City);
+		Medic(Board& game_board, City init_city);
 		~Medic();
+		static std::string role();
 	};
 }

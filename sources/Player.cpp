@@ -142,7 +142,6 @@ namespace pandemic {
 		{
 			return *this;
 		}
-		std::printf("%s\n", this->role().c_str());
 		if (this->role() != "OperationsExpert" && !this->has_card(this->curr_city))
 		{
 			throw std::logic_error("cant build without a city card");
