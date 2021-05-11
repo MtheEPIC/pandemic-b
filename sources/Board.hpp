@@ -13,7 +13,8 @@ namespace pandemic {
 		Board(Board&);
 		int& operator[](City);
 		bool is_clean();
-		Board remove_cures();
+		void remove_cures();
+		void remove_stations();
 	};
 	std::ostream& operator<<(std::ostream& os, const Board& dt);
 	

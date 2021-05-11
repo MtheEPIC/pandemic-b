@@ -28,9 +28,13 @@ namespace pandemic {
 		}
 		return true;
 	}
-	Board Board::remove_cures()
+	void Board::remove_cures()
 	{
-		return *this;
+		
+	}
+	void Board::remove_stations()
+	{
+		
 	}
 	std::ostream& operator<<(std::ostream& os, const Board& dt)
 	{
