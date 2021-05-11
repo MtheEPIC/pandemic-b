@@ -121,6 +121,7 @@ namespace pandemic {
 		
 		M get_pandemic_levels();
 		void set_pandemic_levels(City city, int level);
+		bool is_cure(City);
 		bool has_card(City card);
 		bool has_research_station(City city);
 		void remove_card(City card);

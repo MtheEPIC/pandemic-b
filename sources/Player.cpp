@@ -31,6 +31,11 @@ namespace pandemic {
 		}
 		this->game_board->cities_pandemic_level[city] = level;
 	}
+	bool Player::is_cure(City city)
+	{
+		Color pandemic_color = this->card_colors[city];
+		return this->cures.contains(pandemic_color);
+	}
 	bool Player::has_research_station(City city)
 	{
 		return std::find(this->research_stations.begin(), this->research_stations.end(), curr_city) != this->research_stations.end();
