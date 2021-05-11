@@ -7,6 +7,7 @@ namespace pandemic {
 	public:
 		GeneSplicer(Board& game_board, City init_city);
 		~GeneSplicer();
+		Player& discover_cure(Color);
 		static std::string role();
 	};
 }
