@@ -113,8 +113,7 @@ namespace pandemic {
 			{City::Washington, Color::Blue}
 		};
 		std::unordered_set<Color> cures;
-		// std::unordered_set<City> cards;
-		std::vector<City> cards;
+		std::unordered_set<City> cards;
 		std::vector<City> research_stations;
 		Board* game_board;
 		City curr_city;

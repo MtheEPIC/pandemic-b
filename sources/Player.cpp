@@ -41,26 +41,26 @@ namespace pandemic {
 	}
 	bool Player::has_card(City card)
 	{
-		return std::find(this->cards.begin(), this->cards.end(), card) != this->cards.end();
-		// return this->cards.contains(card);
+		// return std::find(this->cards.begin(), this->cards.end(), card) != this->cards.end();
+		return this->cards.contains(card);
 	}
 	void Player::remove_card(City card)
 	{
-		auto it = std::find(this->cards.begin(), this->cards.end(), card);
-		this->cards.erase(it);
-		// this->cards.erase(card);
+		// auto it = std::find(this->cards.begin(), this->cards.end(), card);
+		// this->cards.erase(it);
+		this->cards.erase(card);
 	}
 	Player& Player::take_card(City card)
 	{
-		auto it = std::find(this->cards.begin(), this->cards.end(), card);
-		if (it == this->cards.end())
-		{
-			this->cards.push_back(card);
-		}
-		// if (!this->has_card(card))
+		// auto it = std::find(this->cards.begin(), this->cards.end(), card);
+		// if (it == this->cards.end())
 		// {
-			// this->cards.insert(card);
+			// this->cards.push_back(card);
 		// }
+		if (!this->has_card(card))
+		{
+			this->cards.insert(card);
+		}
 		return *this;
 	}
 	Player& Player::remove_cards()
@@ -107,7 +107,7 @@ namespace pandemic {
 		{
 			throw std::logic_error("cant fly to a city you're in");
 		}
-		if (this->has_card(this->curr_city))
+		if (!this->has_card(this->curr_city))
 		{
 			throw std::logic_error("cant fly to a city without the card of the current city");
 		}
@@ -121,7 +121,7 @@ namespace pandemic {
 		{
 			throw std::logic_error("cant fly to a city you're in");
 		}
-		if (this->has_card(dest_city))
+		if (!this->has_card(dest_city))
 		{
 			throw std::logic_error("cant fly to a city without the card of the destination city");
 		}
@@ -158,6 +158,11 @@ namespace pandemic {
 	}
 	Player& Player::discover_cure(Color)
 	{
+		Color pandemic_color = this->card_colors[curr_city];
+		if (this->cures.contains(pandemic_color))
+		{
+			return *this;
+		}
 		if (!this->has_research_station(curr_city))
 		{
 			throw std::logic_error("must be in a research station to discover a cure");
@@ -166,19 +171,19 @@ namespace pandemic {
 		{
 			throw std::logic_error("not enough card to discover a cure");
 		}
-		Color pandemic_color = this->card_colors[curr_city];
 		int counter = 0;
-		// for (auto i = this->cards.begin(); i != this->cards.end(); i++)
-		// {
-			// if (this->card_colors.[i] == pandemic_color)
-			// {
-				// counter++;
-			// }
-		// }
+		for (auto i = this->cards.begin(); i != this->cards.end(); i++)
+		{
+			if (this->card_colors[*i] == pandemic_color)
+			{
+				counter++;
+			}
+		}
 		if (counter < this->cards_for_cure)
 		{
 			throw std::logic_error("not enough cards of the right color to discover a cure");
 		}
+		this->cures.insert(pandemic_color);
 		return *this;
 	}
 	std::string Player::role()
